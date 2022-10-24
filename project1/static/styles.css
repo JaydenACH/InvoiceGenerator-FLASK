@@ -1,0 +1,45 @@
+.div-maincontent-left {
+    margin: 0% 3%;
+    float: left;
+    padding: 0px;
+    width: 44%;
+    background-color: rgb(223, 194, 250);
+    border-radius: 20px;
+    height: 250px;
+    padding: 10px 20px;
+}
+
+.div-maincontent-right {
+    background-color: rgb(175, 241, 241);
+    height: 350px;
+    width: 44%;
+    margin-left: 53%;
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+.div-maincontent-bottom {
+    background-color: rgb(184, 250, 228);
+    height: 400px;
+    border-radius: 20px;
+    margin: 50px 3%;
+    padding: 10px 20px;
+
+}
+
+h1 {
+    margin: 20px 3%;
+}
+
+.textarea-address {
+    height: 50px;
+}
+
+.table-scrollspace {
+    overflow: auto;
+    height: 325px;
+}
+
+li.nav-item {
+    margin: 0px 15px;
+}
