@@ -1,0 +1,149 @@
+{% extends "layout.html" %}
+
+{% block title %}Create new project{% endblock %}
+
+{% block body %}
+<div class="newproject-mainbody">
+    <h2>New Project</h2>
+<form action="/createnewproject">
+    <table id="project-info" class="table table-bordered stripped">
+        <thead>
+            <tr>
+                <th colspan="2">1. Project Info</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>ID:</td>
+                <td><input name="project-id" type="text"></td>
+            </tr>
+            <tr>
+                <td>Project Title:</td>
+                <td><input name="project-title" type="text"></td>
+            </tr>
+            <tr>
+                <td>Currency</td>
+                <td><select name="project-currency" id="project-currency">
+                    {% for cur in currency %}
+                    {% if cur[3] == 1 %}
+                    <option value="{{cur}}">{{cur[1]}}: {{cur[2]}}</option>
+                    {% endif %}
+                    {% endfor %}
+                    {% for cur in currency %}
+                    {% if cur[3] == 0 and cur[4] == 1 %}
+                    <option value="{{cur}}">{{cur[1]}}: {{cur[2]}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Payment Terms</td>
+                <td><select name="project-terms" id="project-terms">
+                    <option value="blank"></option>
+                    {% for term in terms %}
+                    <option value="{{term}}">{{term}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Swift Code:</td>
+                <td><input name="swiftcode" type="checkbox"></td>
+            </tr>
+        </tbody>
+    </table>
+    <table id="customer-details" class="table table-bordered stripped">
+        <thead>
+            <tr>
+                <th colspan="2">2. Customer Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Customer Name: </td>
+                <td><select name="customer-id" id="customer-id">
+                    <option value="blank"></option>
+                    {% for cus in customer %}
+                    <option value="{{cus[1]}}">{{cus[1]}}</option>
+                    {% endfor %}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Customer Address: </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Customer Telephone: </td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <table id="item-entries" class="table table-bordered stripped">
+        <thead>
+            <tr>
+                <th colspan="2">3. Item Entries</th>
+            </tr>
+        </thead>
+        <thead>
+            <th>
+                <td>Item No.</td>
+                <td>Description</td>
+                <td>Quantity</td>
+                <td>UOM</td>
+                <td>Unit Price</td>
+                <td>Total</td>
+                <td>Del</td>
+            </th>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td hidden></td>
+                <td hidden></td>
+                <td hidden></td>
+                <td hidden></td>
+                <td hidden></td>
+                <td>Grand Total</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td hidden></td>
+                <td hidden></td>
+                <td hidden></td>
+                <td hidden></td>
+                <td hidden></td>
+                <td>Grand Total</td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+    <table id="quotation-details" class="table table-bordered stripped">
+        <thead>
+            <tr>
+                <th colspan="2">4. Quotation Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Issue Date: </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Payment: </td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <input type="submit" value="Submit" class="btn btn-primary">
+</form>
+</div>
+{% endblock %}

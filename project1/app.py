@@ -1,7 +1,7 @@
 from flask import Flask, flash, render_template, request, redirect
 from datetime import datetime
 from db_query import delete_currency, delete_customer, insert_currency, insert_customer, insert_invoice, insert_itemdetails, insert_projects, insert_quotation, update_currency, update_customer, update_displaycurrency, update_invoice, update_itemdetails, update_projects, update_quotation
-from backendprocess import showcurrency, showcustomer
+from backendprocess import showcurrency, showcustomer, showterms
 
 
 app = Flask(__name__)
@@ -78,6 +78,17 @@ def setdefault():
         update_currency(sym)
         return redirect("/settings-currency")
 
+
+@app.route("/newproject", methods=["GET", "POST"])
+def newproject():
+    if request.method == "GET":
+        currency = showcurrency()
+        terms = showterms()
+        customer = showcustomer()
+        return render_template("newproject.html", currency=currency,
+                               terms=terms, customer=customer)
+    else:
+        return redirect("/newproject")
 
 @app.route("/deletecurrency", methods=["POST", "GET"])
 def deletecurrency():

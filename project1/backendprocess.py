@@ -15,3 +15,7 @@ def showcustomer():
         cur.execute("""SELECT * FROM customers;""")
         
     return cur.fetchall()
+
+
+def showterms():
+    return ["7 days", "30 days", "C.O.D."]

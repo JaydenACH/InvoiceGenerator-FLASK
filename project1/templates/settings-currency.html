@@ -5,11 +5,12 @@
 {% block body %}
 
 <div class="settings-currency-mainbody">
+    <h2>Currency Setting</h2>
     <div class="settings-default-currency">
         <form action="/setdefcurrency" method="POST">
         {% for result in results %}
         {% if result[3] == 1 %}
-        Your default currency is {{result[1]}} {{result[2]}}.<br>
+        <strong>Your default currency is {{result[1]}} {{result[2]}}.</strong><br>
         {% endif %}
         {% endfor %}
         Select default currency:
@@ -24,7 +25,7 @@
     </div>
 
     <div class="settings-default-currency">
-        Choose the currency for selection:
+        <strong>Choose the currency for selection:</strong>
         <div class="settings-showcurr">
         <form action="/setdisplaycurrency" method="POST">
             {% for result in results %}
@@ -34,7 +35,7 @@
             <input type="checkbox" name="symbol" value="{{result[1]}}"> {{result[1]}}: {{result[2]}} <br>
             {% endif %}
             {% endfor %}
-            <input type="submit" value="Show" class="btn btn-outline-primary">
+            <input type="submit" value="Update" class="btn btn-outline-primary">
         </form>              
         </div>
     </div>
