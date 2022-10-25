@@ -5,6 +5,7 @@ cur = conn.cursor()
 
 # with conn: 
 #     cur.execute("""CREATE TABLE currency (
+#                     id INTEGER PRIMARY KEY AUTOINCREMENT,
 #                     symbol TEXT,
 #                     description TEXT,
 #                     default_curr INTEGER,
@@ -13,7 +14,9 @@ cur = conn.cursor()
 
 # with conn:
 #     cur.execute("""CREATE TABLE projects (
-#                     title TEXT,customer TEXT,
+#                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+#                     title TEXT,
+#                     customer TEXT,
 #                     currency INTEGER,
 #                     date_created TEXT,
 #                     date_modified TEXT,
@@ -25,6 +28,7 @@ cur = conn.cursor()
 
 # with conn:
 #     cur.execute("""CREATE TABLE quotation (
+#                     id INTEGER PRIMARY KEY AUTOINCREMENT,
 #                     proj_id INTEGER,
 #                     date_issued TEXT,
 #                     revision INTEGER
@@ -32,6 +36,7 @@ cur = conn.cursor()
     
 # with conn:
 #     cur.execute("""CREATE TABLE itemdetails (
+#                     id INTEGER PRIMARY KEY AUTOINCREMENT,
 #                     proj_id INTEGER,
 #                     description TEXT,
 #                     quantity INTEGER,
@@ -41,6 +46,7 @@ cur = conn.cursor()
 
 # with conn:    
 #     cur.execute("""CREATE TABLE invoice (
+#                     id INTEGER PRIMARY KEY AUTOINCREMENT,
 #                     proj_id INTEGER,
 #                     weightage INTEGER,
 #                     remark TEXT,
@@ -49,6 +55,7 @@ cur = conn.cursor()
 
 # with conn:     
 #     cur.execute("""CREATE TABLE customers (
+#                     id INTEGER PRIMARY KEY AUTOINCREMENT,
 #                     name TEXT,
 #                     address TEXT,
 #                     telephone TEXT

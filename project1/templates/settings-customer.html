@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}Customer Management{% endblock %}
+
+{% block body %}
+
+<div class="settings-customer-mainbody">
+    <table class="table table-bordered stripped table-dark">
+        <thead>
+            <tr>
+                <th style="width:20px">No.</th>
+                <th style="width:200px">Customer Name</th>
+                <th>Customer Address</th>
+                <th style="width:200px">Customer Telephone</th>
+                <th style="width:50px">Delete?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{result[1]}}</td>
+                <td>{{result[2]}}</td>
+                <td>{{result[3]}}</td>
+                <td>
+                    <form action="/deletecustomer" method="POST" onsubmit="return confirm('Do you really want to delete this customer?');">
+                        <input type="text" name="customer" value="{{result[0]}}" hidden>
+                        <input type="submit" value="Delete" class="btn btn-outline-danger">
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            <form action="/settings-customer" method="POST">
+            <tr>
+                <td>New</td>
+                <td><input class="newcustomer" name="newcustomer" type="text" required></td>
+                <td><input class="newcustomer" name="newaddress" type="text" required></td>
+                <td><input class="newcustomer" name="newtelephone" type="text" required></td>
+                <td><input type="submit" value="Submit" class="btn btn-outline-primary"></td>
+            </tr>
+            </form>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

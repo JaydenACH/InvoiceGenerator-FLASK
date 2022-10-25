@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block title %}Currency Update{% endblock %}
+
+{% block body %}
+
+<div class="settings-currency-mainbody">
+    <div class="settings-default-currency">
+        <form action="/setdefcurrency" method="POST">
+        {% for result in results %}
+        {% if result[3] == 1 %}
+        Your default currency is {{result[1]}} {{result[2]}}.<br>
+        {% endif %}
+        {% endfor %}
+        Select default currency:
+        <select name="currency" id="currency">
+            <option value="blank"></option>
+            {% for result in results%}
+            <option name="symbol" value="{{result[1]}}">{{result[1]}} {{result[2]}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Set" class="btn btn-outline-primary">
+        </form>
+    </div>
+
+    <div class="settings-default-currency">
+        Choose the currency for selection:
+        <div class="settings-showcurr">
+        <form action="/setdisplaycurrency" method="POST">
+            {% for result in results %}
+            {% if result[4] == 1 %}
+            <input type="checkbox" name="symbol" value="{{result[1]}}" checked> {{result[1]}}: {{result[2]}} <br>
+            {% else %}
+            <input type="checkbox" name="symbol" value="{{result[1]}}"> {{result[1]}}: {{result[2]}} <br>
+            {% endif %}
+            {% endfor %}
+            <input type="submit" value="Show" class="btn btn-outline-primary">
+        </form>              
+        </div>
+    </div>
+    <p>List of all registered currency:</p>
+    <form action="/settings-currency" method="POST">
+    <table id="display-currency" class="table table-bordered table-stripped table-dark" >
+        <thead>
+            <tr>
+                <th style="width:20px">No.</th>
+                <th style="width:150px">Symbol</th>
+                <th style="width:auto">Currency</th>
+                <th>Delete?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{result[1]}}</td>
+                <td>{{result[2]}}</td>
+                <td>
+                    <form action="/deletecurrency" method="POST" onsubmit="return confirm('Do you really want to delete this currency?');">
+                        <input type="text" name="symbol" value="{{result[1]}}" hidden>
+                        <input type="submit" value="Delete" class="btn btn-outline-danger">
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td>New</td>
+                <td><input class="newsymbol" name="newsymbol" type="text" required></td>
+                <td><input class="newsymbol" name="description" type="text" required></td>
+                <td><input type="submit" value="Submit" class="btn btn-outline-primary"></td>
+            </tr>
+        </tbody>
+    </table>
+    </form>
+
+</div>
+
+
+{% endblock %}

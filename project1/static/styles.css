@@ -1,3 +1,7 @@
+body {
+    font-family: Verdana , sans-serif;
+}
+
 .div-maincontent-left {
     margin: 0% 3%;
     float: left;
@@ -42,4 +46,36 @@ h1 {
 
 li.nav-item {
     margin: 0px 15px;
+}
+
+.settings-currency-mainbody {
+    margin: 0 20%;
+}
+
+.settings-default-currency {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 25px 0;
+}
+
+.settings-showcurr {
+    margin: 0 30px;
+}
+
+input.newsymbol {
+    width: 100%
+}
+
+.spaceformessage {
+    height: 50px;
+    width: 100%
+}
+
+.settings-customer-mainbody {
+    margin: 0 20%;
+}
+
+.newcustomer {
+    width: 100%;
 }

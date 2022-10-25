@@ -1,8 +1,12 @@
-from flask import Flask, render_template, request
+from flask import Flask, flash, render_template, request, redirect
 from datetime import datetime
-from db_query import insert_currency, insert_customer, insert_invoice, insert_itemdetails, insert_projects, insert_quotation, update_currency, update_customer, update_invoice, update_itemdetails, update_projects, update_quotation
+from db_query import delete_currency, delete_customer, insert_currency, insert_customer, insert_invoice, insert_itemdetails, insert_projects, insert_quotation, update_currency, update_customer, update_displaycurrency, update_invoice, update_itemdetails, update_projects, update_quotation
+from backendprocess import showcurrency, showcustomer
+
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = "lsdjbkcklvzjbdvilabjewdib122ug3ef"
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
 
@@ -29,21 +33,66 @@ def index():
     if request.method == "GET":
         return render_template("index.html")
 
-@app.route("/settings")
-def settings():
+
+@app.route("/settings-customer", methods=["POST", "GET"])
+def settingscustomer():
+    results = showcustomer()
     if request.method == "GET":
-        return render_template("settings.html")
+        return render_template("settings-customer.html", results=results)
     else:
-        mode = request.form.get("mode")
-        if mode == "new":
-            sym = request.form.get("symbol")
-            desc = request.form.get("description")
-            def_curr = request.form.get("def_curr")
-            dis_curr = request.form.getlist("display_currency")
-            insert_currency(sym, desc, def_curr, dis_curr)
-        else:
-            
-            update_currency()
+        cus_name = request.form.get("newcustomer")
+        cus_add = request.form.get("newaddress")
+        cus_tel = request.form.get("newtelephone")
+        insert_customer(cus_name, cus_add, cus_tel)
+        return redirect("/settings-customer")
+
+
+@app.route("/deletecustomer", methods=["GET", "POST"])
+def deletecustomer():
+    if request.method == "POST":
+        cus_id = request.form.get("customer")
+        delete_customer(cus_id)
+        return redirect("/settings-customer")
+    
+        
+@app.route("/settings-currency", methods=["GET", "POST"])
+def settings():
+    results = showcurrency()
+    if request.method == "GET":
+        return render_template("settings-currency.html", results=results)
+    else:
+        sym = request.form.get("newsymbol")
+        desc = request.form.get("description")
+        for result in results:
+            if sym == result[1]:
+                flash("Currency existed!", "error")
+                return redirect("/settings-currency")
+        insert_currency(sym, desc, 0, 1)
+        return redirect("/settings-currency")
+
+
+@app.route("/setdefcurrency", methods=["GET", "POST"])
+def setdefault():
+    if request.method == "POST":
+        sym = request.form.get("currency")
+        update_currency(sym)
+        return redirect("/settings-currency")
+
+
+@app.route("/deletecurrency", methods=["POST", "GET"])
+def deletecurrency():
+    if request.method == "POST":
+        sym = request.form.get("symbol")
+        delete_currency(sym)
+        return redirect("/settings-currency")
+
+
+@app.route("/setdisplaycurrency", methods=["POST", "GET"])
+def setdisplaycurrency():
+    if request.method == "POST":
+        sym = request.form.getlist("symbol")
+        update_displaycurrency(sym)
+        return redirect("/settings-currency")
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -21,15 +21,15 @@
         <script type="text/javascript" charset="utf8" src="https://unpkg.com/bootstrap-table@1.21.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
-    
+        <script type="text/javascript" charset="utf8" src="/static/scripts.js"></script>
     </head>
-    <body>
+    <body style="font-family: Tahoma, sans-serif">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="https://beltiston.co/" target="_blank"><img style="height: 50px" align="middle" src="/static/logo.png"></a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Homepage</a>
+                        <a class="nav-link" href="/">Homepage</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">New Project</a>
@@ -52,15 +52,30 @@
                         <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Settings </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Currency Update</a>
+                            <a class="dropdown-item" href="/settings-currency">Currency Update</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Customer Management</a>
+                            <a class="dropdown-item" href="/settings-customer">Customer Management</a>
                         </div>
                     </li>
                 </ul>
             </div>
         </nav>
+        <div class="spaceformessage">
+            <div class="message">
+                {% for message in get_flashed_messages() %}
+                    <div class="alert alert-warning alert-dismissible fade show">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
         {% block body %}
         {% endblock %}
     </body>
+    <script text="javascript">
+        setTimeout(fade_out, 10000);
+        function fade_out() {
+            $(".message").fadeOut().empty();
+        }
+    </script>
 </html>
