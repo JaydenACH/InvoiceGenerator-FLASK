@@ -6,3 +6,6 @@ Completed SQLITE tables creation & layout.html as template.
 
 25 Oct 2022:
 Completed the function to add currency & add customer into database tables.
+
+25 Oct 2022:
+Started new project page.
