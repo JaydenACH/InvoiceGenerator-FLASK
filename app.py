@@ -81,12 +81,10 @@ def setdefault():
 @app.route("/newproject", methods=["GET", "POST"])
 def newproject():
     if request.method == "GET":
-        currency = showcurrency()
-        terms = showterms()
-        customer = showcustomer()
-        return render_template("newproject.html", currency=currency,
-                               terms=terms, customer=customer)
+        return render_template("newproject.html", currency=showcurrency(),
+                               terms=showterms(), customer=showcustomer())
     else:
+
         return redirect("/newproject")
 
 
