@@ -1,13 +1,13 @@
 from flask import Flask, flash, render_template, request, redirect
-from datetime import datetime
-from db_query import delete_currency, delete_customer, insert_currency, insert_customer, insert_invoice, insert_itemdetails, insert_projects, insert_quotation, update_currency, update_customer, update_displaycurrency, update_invoice, update_itemdetails, update_projects, update_quotation
+from db_query import delete_currency, delete_customer, insert_currency, insert_customer, insert_invoice, \
+    insert_itemdetails, insert_projects, insert_quotation, update_currency, update_customer, update_displaycurrency, \
+    update_invoice, update_itemdetails, update_projects, update_quotation
 from backendprocess import showcurrency, showcustomer, showterms
 
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "lsdjbkcklvzjbdvilabjewdib122ug3ef"
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-
 
 
 # class SalesProject:
@@ -26,7 +26,6 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 #     def __str__(self):
 #         return f"Project: {self.title} by {self.customer} is bringing in {self.currency}{self.total_amount}."
 
-    
 
 @app.route("/")
 def index():
@@ -51,7 +50,7 @@ def settingscustomer():
 def deletecustomer():
     if request.method == "POST":
         cus_id = request.form.get("customer")
-        delete_customer(cus_id)
+        delete_customer(int(cus_id))
         return redirect("/settings-customer")
     
         
@@ -90,6 +89,7 @@ def newproject():
     else:
         return redirect("/newproject")
 
+
 @app.route("/deletecurrency", methods=["POST", "GET"])
 def deletecurrency():
     if request.method == "POST":
@@ -104,6 +104,7 @@ def setdisplaycurrency():
         sym = request.form.getlist("symbol")
         update_displaycurrency(sym)
         return redirect("/settings-currency")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
