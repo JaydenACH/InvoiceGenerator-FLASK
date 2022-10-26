@@ -125,11 +125,21 @@
         <tbody>
             <tr>
                 <td style="width: 500px;">Issue Date: </td>
-                <td></td>
+                <td><input name="issuedate" id="issuedate" type="date"></td>
             </tr>
             <tr>
                 <td>Payment: </td>
-                <td></td>
+                <td>
+                    <table id="percent-table">
+                        <tbody>
+                            <tr>
+                                <td><input name="percent[]" id="percent1" type="number" onchange="addpercentrow()"></td>
+                                <td>% upon</td>
+                                <td><input name="remark[]" id="remark1" type="text"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -150,7 +160,6 @@
                 document.getElementById("customer-telephone").innerHTML = "";
             }
         }
-
     }
 </script>
 {% endblock %}
