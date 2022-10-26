@@ -27,7 +27,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 #         return f"Project: {self.title} by {self.customer} is bringing in {self.currency}{self.total_amount}."
 
 
-@app.route("/")
+@app.route("/", methods=["POST", "GET"])
 def index():
     if request.method == "GET":
         return render_template("index.html")
