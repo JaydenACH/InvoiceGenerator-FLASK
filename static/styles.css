@@ -84,3 +84,14 @@ input.newsymbol {
     margin: 0% 10%;
 }
 
+.item-index {
+    width:100%;
+    text-align: center;
+    background-color: white;
+    border: none;
+}
+
+.item-table {
+    width: 100%;
+
+}

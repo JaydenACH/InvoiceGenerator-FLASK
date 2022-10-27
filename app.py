@@ -84,7 +84,34 @@ def newproject():
         return render_template("newproject.html", currency=showcurrency(),
                                terms=showterms(), customer=showcustomer())
     else:
-
+        projectid = request.form.get("project-id").strip()
+        projecttitle = request.form.get("project-title").strip().title()
+        projectcurrency = request.form.get("project-currency")
+        projectterms = request.form.get("project-terms")
+        swiftcode = request.form.get("swiftcode") == None
+        customerid = request.form.get("customer-id")
+        itemdesc = request.form.get("item-description[]")
+        itemqty = request.form.getlist("item-quantity[]")
+        itemuom = request.form.getlist("item-uom[]")
+        itemunitprice = request.form.getlist("item-unitprice[]")
+        issuedate = request.form.get("issuedate")
+        paypercent = request.form.getlist("percent[]")
+        payremark = request.form.getlist("remark[]")
+        print(projectid)
+        print(projecttitle)
+        print(projectcurrency)
+        print(projectterms)
+        print(swiftcode)
+        print(customerid)
+        print(itemdesc)
+        print(itemqty)
+        print(itemuom)
+        print(itemunitprice)
+        print(issuedate)
+        print(paypercent)
+        print(payremark)
+        print("OK")
+        flash("The project is not recorded yet, as the feature is not completed in backend", "info")
         return redirect("/newproject")
 
 

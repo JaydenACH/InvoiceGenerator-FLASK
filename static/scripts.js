@@ -12,10 +12,14 @@ document.addEventListener("DOMContentLoaded", () => {
     let maxDate = y + '-' + m + '-' + d
     if (todaydate) {
         todaydate.setAttribute("max",maxDate);
+        todaydate.setAttribute("value",maxDate);
     }
 
     setTimeout(fade_out, 10000);
 
+    var cur = document.getElementById("project-currency").value
+    var gt = document.getElementById("grandtotal")
+    gt.innerHTML = `Grand Total (${cur})`
 });
 
 function fade_out() {
@@ -30,6 +34,10 @@ function addpercentrow() {
         percent = table.rows[i].cells[0].firstChild.value;
         if (percent) {
             total_percent = total_percent + parseInt(percent);
+            if (total_percent > 100) {
+                alert("More than 100%");
+                table.rows[i].cells[0].firstChild.value = "";
+            }
         }
     }
     if (total_percent < 100) {
@@ -56,5 +64,76 @@ function addpercentrow() {
                 table.deleteRow(i);
             }
         }
+    } 
+}
+
+function calculategrandamount() {
+    var table = document.getElementById("item-entries")
+    var grandtotalamount = 0;
+    for (var i = 2; i < table.rows.length - 1; i++) {
+        amount = parseFloat(table.rows[i].cells[5].innerHTML);
+        grandtotalamount = grandtotalamount + amount;
     }
+    if (grandtotalamount) {
+        document.getElementById("grandtotalamount").innerHTML = grandtotalamount.toFixed(2);
+    }
+}
+
+function calculatetotalprice(row) {
+    if (row.parentElement.id.slice(0,8) == "quantity") {
+        var row_id = row.parentElement.id.slice(8)
+    } else {
+        var row_id = row.parentElement.id.slice(9)
+    }
+    var qty = document.getElementById(`quantity${row_id}`).firstChild.value
+    var unitprice = document.getElementById(`unitprice${row_id}`).firstChild.value
+    qty = parseFloat(qty);
+    unitprice = parseFloat(unitprice);
+    if (qty && unitprice) {
+        total = qty * unitprice;
+        total_2 = total.toFixed(2);
+        document.getElementById(`totalprice${row_id}`).innerHTML = total_2;
+        calculategrandamount();
+    }
+}
+
+function forwardcurrency() {
+    var cur = document.getElementById("project-currency").value
+    var gt = document.getElementById("grandtotal")
+    gt.innerHTML = `Grand Total (${cur})`
+}
+
+function addrowitems() {
+    var table = document.getElementById("item-entries")
+    var tablebody = document.getElementById("item-entries").getElementsByTagName('tbody')[0];
+    var rowCount = table.rows.length - 2;
+    var row = tablebody.insertRow();
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+    var cell6 = row.insertCell(5);
+    var cell7 = row.insertCell(6);
+    var newrow = rowCount;
+    cell2.innerHTML = '<input class="item-table" type="text" maxlength="50" min="0" step="any" name="item-description[]" required>';
+    cell3.innerHTML = '<input class="item-table" type="number" name="item-quantity[]" onchange="calculatetotalprice(this)" required>';
+    cell4.innerHTML = '<input class="item-table" type="text" maxlength="5" name="item-uom[]" required>';
+    cell5.innerHTML = '<input class="item-table" id="input-unitprice' + newrow + '" min="0" step="any" type="number" name="item-unitprice[]" onchange="calculatetotalprice(this)" required>';
+    cell6.innerHTML = '';
+    cell7.innerHTML = '<button onclick="deleteitemrow(this)">Delete</button>';
+    cell1.className = 'counterCell';
+    cell2.id = 'description' + newrow;
+    cell3.id = 'quantity' + newrow;
+    cell4.id = 'uom' + newrow;
+    cell5.id = 'unitprice' + newrow;
+    cell6.id = 'totalprice' + newrow;
+    cell7.id = 'delete' + newrow;
+}
+
+function deleteitemrow(button) {
+    var cell = button.parentElement;
+    var row = cell.parentElement;
+    row.parentNode.removeChild(row);
+    calculategrandamount()
 }
