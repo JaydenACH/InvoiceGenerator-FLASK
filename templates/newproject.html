@@ -63,7 +63,7 @@
                     <td><select name="customer-id" id="customer-id" onchange="showcusinfo(this)">
                         <option value="blank"></option>
                         {% for cus in customer %}
-                        <option value="{{cus[0]}}">{{cus[1]}}</option>
+                        <option value="{{cus[0]}}" id="{{cus[1]}}">{{cus[1]}}</option>
                         {% endfor %}
                     </select></td>
                 </tr>
@@ -152,10 +152,10 @@
 
 <script>
     function showcusinfo(cus) {
-        var cus_name = cus.value;
+        var cus_id = cus.value;
         var cus_db = {{ customer | tojson }};
         for (i=0; i < cus_db.length; i++) {
-            if (cus_db[i][1] == cus_name) {
+            if (cus_db[i][0] == cus_id) {
                 document.getElementById("customer-address").innerHTML = cus_db[i][2];
                 document.getElementById("customer-telephone").innerHTML = cus_db[i][3];
                 break;
@@ -180,9 +180,3 @@
     }
 </style>
 {% endblock %}
-
-table tbody tr td:first-child::before {
-    content: counter(rowNumber);
-    min-width: 1em;
-    margin-right: 0.5em;
-}

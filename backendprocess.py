@@ -19,3 +19,7 @@ def showcustomer():
 
 def showterms():
     return ["7 days", "30 days", "C.O.D."]
+
+
+def calculate_totalamount(qty: list, unitprice: list) -> float:
+    return 0.00

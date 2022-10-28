@@ -2,7 +2,8 @@ from flask import Flask, flash, render_template, request, redirect
 from db_query import delete_currency, delete_customer, insert_currency, insert_customer, insert_invoice, \
     insert_itemdetails, insert_projects, insert_quotation, update_currency, update_customer, update_displaycurrency, \
     update_invoice, update_itemdetails, update_projects, update_quotation
-from backendprocess import showcurrency, showcustomer, showterms
+from backendprocess import calculate_totalamount, showcurrency, showcustomer, showterms
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -88,7 +89,7 @@ def newproject():
         projecttitle = request.form.get("project-title").strip().title()
         projectcurrency = request.form.get("project-currency")
         projectterms = request.form.get("project-terms")
-        swiftcode = request.form.get("swiftcode") == None
+        swiftcode = request.form.get("swiftcode") != None
         customerid = request.form.get("customer-id")
         itemdesc = request.form.get("item-description[]")
         itemqty = request.form.getlist("item-quantity[]")
@@ -97,22 +98,13 @@ def newproject():
         issuedate = request.form.get("issuedate")
         paypercent = request.form.getlist("percent[]")
         payremark = request.form.getlist("remark[]")
-        print(projectid)
-        print(projecttitle)
-        print(projectcurrency)
-        print(projectterms)
-        print(swiftcode)
-        print(customerid)
-        print(itemdesc)
-        print(itemqty)
-        print(itemuom)
-        print(itemunitprice)
-        print(issuedate)
-        print(paypercent)
-        print(payremark)
-        print("OK")
-        flash("The project is not recorded yet, as the feature is not completed in backend", "info")
-        return redirect("/newproject")
+        # totalamount = calculate_totalamount(itemqty, itemunitprice)
+        # insert_projects(projecttitle, customerid, projectcurrency, str(datetime.today()), "", projectterms, totalamount, "", swiftcode)
+        # insert_quotation(projectid, itemdesc, 0)
+        # insert_itemdetails(projectid, itemdesc, itemqty, itemuom, itemunitprice)
+        # insert_invoice(projectid, paypercent, payremark, issuedate)
+        flash("The project will not be recorded yet, as the feature is not completed in backend", "info")
+        return render_template("newproject.html")
 
 
 @app.route("/deletecurrency", methods=["POST", "GET"])

@@ -20,7 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
     var cur = document.getElementById("project-currency").value
     var gt = document.getElementById("grandtotal")
     gt.innerHTML = `Grand Total (${cur})`
+
+    rowidx = document.getElementById("item-entries").rows.length - 2;
 });
+
+var rowidx = rowidx
 
 function fade_out() {
     $(".message").fadeOut().empty();
@@ -72,10 +76,10 @@ function calculategrandamount() {
     var grandtotalamount = 0;
     for (var i = 2; i < table.rows.length - 1; i++) {
         amount = parseFloat(table.rows[i].cells[5].innerHTML);
-        grandtotalamount = grandtotalamount + amount;
-    }
-    if (grandtotalamount) {
-        document.getElementById("grandtotalamount").innerHTML = grandtotalamount.toFixed(2);
+        if (amount) {
+            grandtotalamount = grandtotalamount + amount;
+            document.getElementById("grandtotalamount").innerHTML = grandtotalamount.toFixed(2);
+        }
     }
 }
 
@@ -103,6 +107,7 @@ function forwardcurrency() {
     gt.innerHTML = `Grand Total (${cur})`
 }
 
+
 function addrowitems() {
     var table = document.getElementById("item-entries")
     var tablebody = document.getElementById("item-entries").getElementsByTagName('tbody')[0];
@@ -115,9 +120,9 @@ function addrowitems() {
     var cell5 = row.insertCell(4);
     var cell6 = row.insertCell(5);
     var cell7 = row.insertCell(6);
-    var newrow = rowCount;
-    cell2.innerHTML = '<input class="item-table" type="text" maxlength="50" min="0" step="any" name="item-description[]" required>';
-    cell3.innerHTML = '<input class="item-table" type="number" name="item-quantity[]" onchange="calculatetotalprice(this)" required>';
+    var newrow = rowidx + 1;
+    cell2.innerHTML = '<input class="item-table" type="text" maxlength="50" name="item-description[]" required>';
+    cell3.innerHTML = '<input class="item-table" type="number" min="0" step="any" name="item-quantity[]" onchange="calculatetotalprice(this)" required>';
     cell4.innerHTML = '<input class="item-table" type="text" maxlength="5" name="item-uom[]" required>';
     cell5.innerHTML = '<input class="item-table" id="input-unitprice' + newrow + '" min="0" step="any" type="number" name="item-unitprice[]" onchange="calculatetotalprice(this)" required>';
     cell6.innerHTML = '';
@@ -129,6 +134,7 @@ function addrowitems() {
     cell5.id = 'unitprice' + newrow;
     cell6.id = 'totalprice' + newrow;
     cell7.id = 'delete' + newrow;
+    rowidx ++;
 }
 
 function deleteitemrow(button) {
