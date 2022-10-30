@@ -15,7 +15,7 @@
             <tbody>
                 <tr>
                     <td style="width: 500px;">ID:</td>
-                    <td><input name="project-id" type="text"></td>
+                    <td id="project-id"><input name="project-id" id="id-value" type="text" onchange="checkvalidid()" value="{{defid}}"></td>
                 </tr>
                 <tr>
                     <td>Project Title:</td>
@@ -26,12 +26,12 @@
                     <td><select name="project-currency" id="project-currency" onchange="forwardcurrency()">
                         {% for cur in currency %}
                         {% if cur[3] == 1 %}
-                        <option value="{{cur[1]}}">{{cur[1]}}: {{cur[2]}}</option>
+                        <option value="{{cur[0]}}" data-sym="{{cur[1]}}">{{cur[1]}}: {{cur[2]}}</option>
                         {% endif %}
                         {% endfor %}
                         {% for cur in currency %}
                         {% if cur[3] == 0 and cur[4] == 1 %}
-                        <option value="{{cur[1]}}">{{cur[1]}}: {{cur[2]}}</option>
+                        <option value="{{cur[0]}}" data-sym="{{cur[1]}}">{{cur[1]}}: {{cur[2]}}</option>
                         {% endif %}
                         {% endfor %}
                     </select></td>
@@ -151,6 +151,7 @@
 </div>
 
 <script>
+    var def_prjid = "{{defid}}"
     function showcusinfo(cus) {
         var cus_id = cus.value;
         var cus_db = {{ customer | tojson }};
@@ -162,6 +163,20 @@
             } else {
                 document.getElementById("customer-address").innerHTML = "";
                 document.getElementById("customer-telephone").innerHTML = "";
+            }
+        }
+    }
+
+    function checkvalidid() {
+        var cell_projid = document.getElementById("project-id");
+        var projids = {{ projids | tojson }};
+        var user_projid = document.getElementById("id-value").value;
+        for (i=0; i < projids.length; i++) {
+            if (user_projid == projids[0]) {
+                cell_projid.innerHTML = '<input name="project-id" id="id-value" type="text" onchange="checkvalidid()" value='+def_prjid+'>' + "  ID's been taken. Use this instead."
+                break
+            } else {
+                cell_projid.innerHTML = '<input name="project-id" id="id-value" type="text" onchange="checkvalidid()" value='+user_projid+'>' + "  ID is valid."
             }
         }
     }

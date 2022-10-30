@@ -4,9 +4,168 @@
 
 {% block body %}
 
-<div>
+<div class="homepage-mainbody">
     <h2>Home Page</h2>
-
+    <div class="homepage-topbody">
+        <h3>Browse for invoices below:</h3>
+        <table id="table-invoice" class="table table-bordered stripped">
+            <thead>
+                <tr>
+                    <th>Project ID</th>
+                    <th>Project Name</th>
+                    <th>Customer name</th>
+                    <th>Total Amount</th>
+                    <th>Progress</th>
+                    <th>Invoice ID</th>
+                    <th>Amount Due</th>
+                    <th>Due Date</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="homepage-btmbody">
+        <h3>Browse for projects below:</h3>
+        <table id="table-quotation" class="table table-bordered stripped">
+            <thead>
+                <tr>
+                    <th>Project ID</th>
+                    <th>Project Name</th>
+                    <th>Customer name</th>
+                    <th>Total Amount</th>
+                    <th>No of Items</th>
+                    <th>Quotation ID</th>
+                    <th>Issue Date</th>
+                    <th>Valid Till</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 </div>
+<script>
+    $(document).ready( function () {
+        $('#table-quotation thead tr')
+            .clone(true)
+            .addClass('filters')
+            .appendTo('#table-quotation thead');
+        $('#table-quotation').DataTable({
+            "orderCellsTop": true,
+            "bAutoWidth": false,
+            "ajax": "{{ url_for('quotationdata') }}",
+            "pageLength": 15,
+            "lengthMenu": [15, 30, 45, 60],
+            initComplete: function () {
+                var api = this.api();
+                api.columns().eq(0)
+                    .each(function (colIdx) {
+                        // Set the header cell to contain the input element
+                        var cell = $('.filters th').eq($(api.column(colIdx).header()).index());
+                        var title = $(cell).text();
+                        $(cell).html('<input type="text" placeholder="' + title + '" style="width:100%" />');
 
+                        // On every keypress in this input
+                        $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
+                            .off('keyup change')
+                            .on('change', function (e) {
+                                // Get the search value
+                                $(this).attr('title', $(this).val());
+                                var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                                var cursorPosition = this.selectionStart;
+                                // Search the column for that value
+                                api
+                                    .column(colIdx)
+                                    .search(
+                                        this.value != ''
+                                            ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                            : '',
+                                        this.value != '',
+                                        this.value == ''
+                                    )
+                                    .draw();
+                            })
+                            .on('keyup', function (e) {
+                                e.stopPropagation();
+
+                                $(this).trigger('change');
+                                $(this)
+                                    .focus()[0]
+                                    .setSelectionRange(cursorPosition, cursorPosition);
+                            });
+                    });
+            }
+        });
+        $('#table-invoice thead tr')
+            .clone(true)
+            .addClass('filters')
+            .appendTo('#table-invoice thead');
+        $('#table-invoice').DataTable({
+            "orderCellsTop": true,
+            "bAutoWidth": false,
+            "ajax": "{{ url_for('invoicedata') }}",
+            "pageLength": 15,
+            "lengthMenu": [15, 30, 45, 60],
+            initComplete: function () {
+                var api = this.api();
+                api.columns().eq(0)
+                    .each(function (colIdx) {
+                        // Set the header cell to contain the input element
+                        var cell = $('.filters th').eq($(api.column(colIdx).header()).index());
+                        var title = $(cell).text();
+                        $(cell).html('<input type="text" placeholder="' + title + '" style="width:100%" />');
+
+                        // On every keypress in this input
+                        $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
+                            .off('keyup change')
+                            .on('change', function (e) {
+                                // Get the search value
+                                $(this).attr('title', $(this).val());
+                                var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                                var cursorPosition = this.selectionStart;
+                                // Search the column for that value
+                                api
+                                    .column(colIdx)
+                                    .search(
+                                        this.value != ''
+                                            ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                            : '',
+                                        this.value != '',
+                                        this.value == ''
+                                    )
+                                    .draw();
+                            })
+                            .on('keyup', function (e) {
+                                e.stopPropagation();
+
+                                $(this).trigger('change');
+                                $(this)
+                                    .focus()[0]
+                                    .setSelectionRange(cursorPosition, cursorPosition);
+                            });
+                    });
+            }
+        })
+    })
+</script>
 {% endblock %}
+
+
+
+toptable.columns().every(function () {
+    var column = this;
+    var select = $('<select style="width: 100%;"><option value=""></option></select>')
+        .appendTo($(column.footer()).empty())
+        .on('change', function () {
+            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+            column.search(val ? '^' + val + '$' : '', true, false).draw();
+        });
+    column
+        .data()
+        .unique()
+        .sort()
+        .each(function (d, j) {
+            select.append('<option value="' + d + '">' + d + '</option>');
+        });
+});

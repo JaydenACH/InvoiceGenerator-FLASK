@@ -1,5 +1,5 @@
 import sqlite3
-from backendprocess import showcurrency
+from backendprocess import getcurrbyid, getcusnamebyid, showcurrency
 
 
 def insert_currency(sym: str, desc: str, def_curr: int = 0, dis_curr: int = 1):
@@ -50,35 +50,39 @@ def delete_customer(cus_id: int):
         cur.execute("""DELETE FROM customers WHERE id=?;""", (cus_id,))
 
 
-def insert_projects(title: str, customer: str, currency: int, date_created: str, date_modified: str,
-                    payment_term: int, total_amount: float, total_received: float, swiftcode: int):
+def insert_projects(projid:int, title: str, cusid: int, currency: int, date_created: str, date_modified: str,
+                    payment_term: str, total_amount: float, total_received: float, swiftcode: bool):
+    cusname = getcusnamebyid(cusid)
+    sc = 1 if swiftcode else 0
     with sqlite3.connect('p1_database.db') as conn:
         cur = conn.cursor()
         cur.execute("""INSERT INTO projects VALUES
-                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                    (None, title, customer, currency, date_created, date_modified,
-                     payment_term, total_amount, total_received, swiftcode))
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                    (None, projid, title, cusname, currency, date_created, date_modified,
+                     payment_term, total_amount, total_received, sc))
 
 
-def insert_quotation(proj_id: int, desc: str, rev: int):
+def insert_quotation(quo_id: str, proj_id: int, issdate: str, rev: int):
     with sqlite3.connect('p1_database.db') as conn:
         cur = conn.cursor()
         cur.execute("""INSERT INTO quotation VALUES 
-                    (?, ?, ?, ?)""", (None, proj_id, desc, rev))
+                    (?, ?, ?, ?, ?)""", (None, quo_id, proj_id, issdate, rev))
 
 
-def insert_itemdetails(proj_id: int, desc: str, qty: int, uom: str, unitprice: float):
+def insert_itemdetails(proj_id: int, desc_list: list, qty_list: list, uom_list: list, unitprice_list: list):
     with sqlite3.connect('p1_database.db') as conn:
         cur = conn.cursor()
-        cur.execute("""INSERT INTO itemdetails VALUES 
-                    (?, ?, ?, ?, ?, ?)""", (None, proj_id, desc, qty, uom, unitprice))
+        for desc, qty, uom, unitprice in zip(desc_list, qty_list, uom_list, unitprice_list):
+            cur.execute("""INSERT INTO itemdetails VALUES 
+                        (?, ?, ?, ?, ?, ?)""", (None, proj_id, desc, qty, uom, unitprice))
 
 
-def insert_invoice(proj_id: int, weightage: int, remark: str, date_issued: str):
+def insert_invoice(inv_id: str, proj_id: int, weightage_list: int, remark_list: str, date_issued: str):
     with sqlite3.connect('p1_database.db') as conn:
         cur = conn.cursor()
-        cur.execute("""INSERT INTO invoice VALUES 
-                    (?, ?, ?, ?, ?)""", (None, proj_id, weightage, remark, date_issued))
+        for weightage, remark in zip(weightage_list, remark_list):
+            cur.execute("""INSERT INTO invoice VALUES 
+                        (?, ?, ?, ?, ?, ?)""", (None, inv_id, proj_id, weightage, remark, date_issued))
 
 
 def update_customer():

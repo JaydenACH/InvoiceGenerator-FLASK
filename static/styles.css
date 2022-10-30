@@ -93,5 +93,19 @@ input.newsymbol {
 
 .item-table {
     width: 100%;
+}
 
+.homepage-mainbody {
+    margin: 0% 5%;
+}
+
+#table-invoice, #table-quotation th {
+    text-align: center;
+}
+
+.homepage-topbody, .homepage-btmbody {
+    margin: 25px;
+    padding: 30px;
+    border: 1px solid black;
+    border-radius: 10px;
 }

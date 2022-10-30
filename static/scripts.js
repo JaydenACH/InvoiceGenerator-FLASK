@@ -17,11 +17,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(fade_out, 10000);
 
-    var cur = document.getElementById("project-currency").value
-    var gt = document.getElementById("grandtotal")
-    gt.innerHTML = `Grand Total (${cur})`
+    var selectcurr = document.getElementById("project-currency");
+    if (selectcurr) {
+        var optioncurr = selectcurr.options[selectcurr.selectedIndex];
+        var attrcur = optioncurr.getAttribute("data-sym");
+    }
+    var gt = document.getElementById("grandtotal");
+    if (selectcurr && gt) {
+        gt.innerHTML = `Grand Total (${attrcur})`;
+    }
 
-    rowidx = document.getElementById("item-entries").rows.length - 2;
+    let tableItem = document.getElementById("item-entries")
+    if (tableItem) {
+        rowidx = tableItem.rows.length - 2;
+    }
 });
 
 var rowidx = rowidx
@@ -102,9 +111,11 @@ function calculatetotalprice(row) {
 }
 
 function forwardcurrency() {
-    var cur = document.getElementById("project-currency").value
-    var gt = document.getElementById("grandtotal")
-    gt.innerHTML = `Grand Total (${cur})`
+    var selectcurr = document.getElementById("project-currency");
+    var optioncurr = selectcurr.options[selectcurr.selectedIndex];
+    var attrcur = optioncurr.getAttribute("data-sym");
+    var gt = document.getElementById("grandtotal");
+    gt.innerHTML = `Grand Total (${attrcur})`;
 }
 
 
@@ -143,3 +154,5 @@ function deleteitemrow(button) {
     row.parentNode.removeChild(row);
     calculategrandamount()
 }
+
+

@@ -12,7 +12,7 @@
                 <th style="width:20px">No.</th>
                 <th style="width:200px">Customer Name</th>
                 <th>Customer Address</th>
-                <th style="width:200px">Customer Telephone</th>
+                <th style="width:300px">Customer Telephone</th>
                 <th style="width:50px">Delete?</th>
             </tr>
         </thead>
@@ -34,9 +34,9 @@
             <form action="/settings-customer" method="POST">
             <tr>
                 <td>New</td>
-                <td><input class="newcustomer" name="newcustomer" type="text" required></td>
-                <td><input class="newcustomer" name="newaddress" type="text" required></td>
-                <td><input class="newcustomer" name="newtelephone" type="text" required></td>
+                <td><input class="newcustomer" name="newcustomer" type="text" required value="{{cus_name}}"></td>
+                <td><input class="newcustomer" name="newaddress" type="text" required value="{{cus_add}}" placeholder="Use comma (,) to break lines when printing later."></td>
+                <td><input class="newcustomer" name="newtelephone" type="text" required value="{{cus_tel}}" placeholder="format: +############"></td>
                 <td><input type="submit" value="Submit" class="btn btn-outline-primary"></td>
             </tr>
             </form>
