@@ -3,7 +3,7 @@ from django.shortcuts import render
 from flask import Flask, flash, jsonify, render_template, request, redirect
 import phonenumbers
 from db_query import delete_currency, delete_customer, insert_currency, insert_customer, insert_invoice, \
-    insert_itemdetails, insert_projects, insert_quotation, update_currency, update_customer, update_displaycurrency, \
+    insert_itemdetails, insert_projects, insert_quotation, set_currencydef, update_customer, set_displaycurrency, \
     update_invoice, update_itemdetails, update_projects, update_quotation
 from backendprocess import calculate_totalamount, checkitementries, provide_defprojid, projectidcheck, checktelephonenumber, get_invoicedata, showcurrency, showcustomer, showterms, get_quotationdata
 from datetime import datetime
@@ -88,7 +88,8 @@ def deletecustomer():
 def settings():
     results = showcurrency()
     if request.method == "GET":
-        return render_template("settings-currency.html", results=results)
+        return render_template("settings-currency.html", results=results,
+                               sym="", desc="")
     else:
         sym = request.form.get("newsymbol")
         desc = request.form.get("description")
@@ -96,7 +97,15 @@ def settings():
             if sym == result[1]:
                 flash("Currency existed!", "error")
                 return redirect("/settings-currency")
-        insert_currency(sym, desc, 0, 1)
+        
+        # if no default currency found, newly inserted currency is the recently deleted default currency
+        # or newly inserted currency is the first currency
+        # so make that the default currency
+        for result in results:
+            if result[3] == 1:
+                insert_currency(sym, desc, 0, 1)
+                return redirect("/settings-currency")
+        insert_currency(sym, desc, 1, 1)
         return redirect("/settings-currency")
 
 
@@ -104,7 +113,10 @@ def settings():
 def setdefault():
     if request.method == "POST":
         sym = request.form.get("currency")
-        update_currency(sym)
+        if sym == "":
+            flash("Submited empty value as default currency.")
+            return redirect("/settings-currency")
+        set_currencydef(sym)
         return redirect("/settings-currency")
 
 
@@ -148,7 +160,15 @@ def newproject():
 @app.route("/viewproject", methods=["GET", "POST"])
 def viewproject():
     if request.method == "GET":
-        return render_template("viewtemplate.html")
+        proj_id = request.args.get("proj_id")
+        
+        return render_template("viewproject.html")
+
+
+@app.route("/searchproject", methods=["GET", "POST"])
+def searchproject():
+    if request.method == "GET":
+        return render_template("searchproject.html")
 
 
 @app.route("/deletecurrency", methods=["POST", "GET"])
@@ -159,11 +179,23 @@ def deletecurrency():
         return redirect("/settings-currency")
 
 
+@app.route("/updatecurrencydetails", methods=["GET", "POST"])
+def updatecurrencydetails():
+    if request.method == "POST":
+        currid = request.form.get("currid")
+        sym = request.form.get("currsym")
+        desc = request.form.get("currdesc")
+        delete_currency(sym)
+        results = showcurrency()
+        return render_template("settings-currency.html", results=results,
+                               sym=sym, desc=desc)
+
+
 @app.route("/setdisplaycurrency", methods=["POST", "GET"])
 def setdisplaycurrency():
     if request.method == "POST":
         sym = request.form.getlist("symbol")
-        update_displaycurrency(sym)
+        set_displaycurrency(sym)
         return redirect("/settings-currency")
 
 

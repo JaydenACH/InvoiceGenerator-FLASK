@@ -7,20 +7,20 @@
 <div class="settings-currency-mainbody">
     <h2>Currency Setting</h2>
     <div class="settings-default-currency">
-        <form action="/setdefcurrency" method="POST">
+        <form action="/setdefcurrency" id="setdefcurrency" method="POST">
         {% for result in results %}
         {% if result[3] == 1 %}
         <strong>Your default currency is {{result[1]}} {{result[2]}}.</strong><br>
         {% endif %}
         {% endfor %}
         Select default currency:
-        <select name="currency" id="currency">
+        <select name="currency" id="selectcurrency" onChange="setdisable()">
             <option value="blank"></option>
             {% for result in results%}
             <option name="symbol" value="{{result[1]}}">{{result[1]}} {{result[2]}}</option>
             {% endfor %}
         </select>
-        <input type="submit" value="Set" class="btn btn-outline-primary">
+        <button type="submit" id="setdefcurrency_btn" class="btn btn-outline-primary">Set</button>
         </form>
     </div>
 
@@ -48,6 +48,7 @@
                 <th style="width:150px">Symbol</th>
                 <th style="width:auto">Currency</th>
                 <th>Delete?</th>
+                <th>Edit</th>
             </tr>
         </thead>
         <tbody>
@@ -62,19 +63,37 @@
                         <input type="submit" value="Delete" class="btn btn-outline-danger">
                     </form>
                 </td>
+                <td>
+                    <form action="/updatecurrencydetails" method="POST">
+                        <input type="text" name="currid" value="{{result[0]}}" hidden>
+                        <input type="text" name="currsym" value="{{result[1]}}" hidden>
+                        <input type="text" name="currdesc" value="{{result[2]}}" hidden>
+                        <input type="submit" value="Edit" class="btn btn-outline-warning">
+                    </form>
+                </td>
             </tr>
             {% endfor %}
             <tr>
                 <td>New</td>
-                <td><input class="newsymbol" name="newsymbol" type="text" required></td>
-                <td><input class="newsymbol" name="description" type="text" required></td>
+                <td><input class="newsymbol" name="newsymbol" type="text" required value="{{sym}}"></td>
+                <td><input class="newsymbol" name="description" type="text" required value="{{desc}}"></td>
                 <td><input type="submit" value="Submit" class="btn btn-outline-primary"></td>
             </tr>
         </tbody>
     </table>
     </form>
-
 </div>
-
+<script>
+    setdisable();
+    function setdisable() {
+        var btn_currency = document.getElementById("setdefcurrency_btn");
+        var currency = document.getElementById("selectcurrency");
+        if (currency.value == "blank") {
+            btn_currency.disabled = true;
+        } else {
+            btn_currency.disabled = false;
+        }
+    }
+</script>
 
 {% endblock %}

@@ -47,7 +47,7 @@
     $(document).ready( function () {
         $('#table-quotation thead tr')
             .clone(true)
-            .addClass('filters')
+            .addClass('filters1')
             .appendTo('#table-quotation thead');
         $('#table-quotation').DataTable({
             "orderCellsTop": true,
@@ -60,12 +60,12 @@
                 api.columns().eq(0)
                     .each(function (colIdx) {
                         // Set the header cell to contain the input element
-                        var cell = $('.filters th').eq($(api.column(colIdx).header()).index());
+                        var cell = $('.filters1 th').eq($(api.column(colIdx).header()).index());
                         var title = $(cell).text();
                         $(cell).html('<input type="text" placeholder="' + title + '" style="width:100%" />');
 
                         // On every keypress in this input
-                        $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
+                        $('input', $('.filters1 th').eq($(api.column(colIdx).header()).index()))
                             .off('keyup change')
                             .on('change', function (e) {
                                 // Get the search value
@@ -98,7 +98,7 @@
         });
         $('#table-invoice thead tr')
             .clone(true)
-            .addClass('filters')
+            .addClass('filters2')
             .appendTo('#table-invoice thead');
         $('#table-invoice').DataTable({
             "orderCellsTop": true,
@@ -111,12 +111,12 @@
                 api.columns().eq(0)
                     .each(function (colIdx) {
                         // Set the header cell to contain the input element
-                        var cell = $('.filters th').eq($(api.column(colIdx).header()).index());
+                        var cell = $('.filters2 th').eq($(api.column(colIdx).header()).index());
                         var title = $(cell).text();
                         $(cell).html('<input type="text" placeholder="' + title + '" style="width:100%" />');
 
                         // On every keypress in this input
-                        $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
+                        $('input', $('.filters2 th').eq($(api.column(colIdx).header()).index()))
                             .off('keyup change')
                             .on('change', function (e) {
                                 // Get the search value

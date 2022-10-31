@@ -3,7 +3,7 @@ import phonenumbers
 from datetime import datetime, timedelta
 
 
-def showcurrency():
+def showcurrency(key:str = ""):
     with sqlite3.connect('p1_database.db') as conn:
         cur = conn.cursor()
         cur.execute("""SELECT * FROM currency;""")
@@ -164,7 +164,6 @@ def get_invoicedata():
                     else:
                         temp_row.append("")
                     invoicedata.append(temp_row)
-        print(invoicedata)
         return {"data": invoicedata}
     
 

@@ -9,7 +9,7 @@ def insert_currency(sym: str, desc: str, def_curr: int = 0, dis_curr: int = 1):
                     (?, ?, ?, ?, ?)""", (None, sym, desc, def_curr, dis_curr))
 
 
-def update_currency(sym: str):
+def set_currencydef(sym: str):
     with sqlite3.connect('p1_database.db') as conn:
         cur = conn.cursor()
         results = showcurrency()
@@ -20,7 +20,7 @@ def update_currency(sym: str):
                 cur.execute("""UPDATE currency SET default_curr=0 WHERE symbol=?;""", (result[1],))
 
 
-def update_displaycurrency(syms: list):
+def set_displaycurrency(syms: list):
     with sqlite3.connect('p1_database.db') as conn:
         cur = conn.cursor()
         results = showcurrency()

@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}Search Project{% endblock %}
+
+{% block body %}
+
+<div class="searchproject-maincontent">
+    <div>
+        <form action="/viewproject" method="GET" target="_blank">
+            <p>Search Project:</p>
+            <input type="text" id="proj_id" name="proj_id">
+            <input type="submit" value="Search" class="btn btn-outline-primary">
+        </form>
+    </div>
+</div>
+
+{% endblock %}
